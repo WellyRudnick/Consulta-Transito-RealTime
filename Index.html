@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Trânsito</title>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrvL_N2Yqun7IsUCECKIhcy2h_36RPRj4&callback=initMap"></script>
+    <style>
+        .map {
+            width: 90%;
+            height: 400px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-left: 50px;
+        }
+        h2, h1 {
+            text-align: center;
+        }
+        body {
+            background-color: #f0f0f0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1 style="margin: center;" >Monitor de Trânsito</h1>
+    <div class="container">
+        <div id="map-container">
+            <h2>Serra de Curitiba</h2>
+            <div id="map1" class="map"></div>
+        </div>
+        <div id="map-container">
+            <h2>Região Joinville</h2>
+            <div id="map2" class="map"></div>
+        </div>
+        <div id="map-container">
+            <h2>Região Barra Velha</h2>
+            <div id="map3" class="map"></div>
+        </div>
+        <div id="map-container">
+            <h2>Região Itajaí e Balneário Camboriú</h2>
+            <div id="map4" class="map"></div>
+        </div>
+    </div>
+
+    <script>
+        let maps = [];
+        let locations = [
+            { lat: -25.8533, lng: -48.9671 }, // Serra de Curitiba
+            { lat: -26.3182, lng: -48.8723 }, // Região Joinville
+            { lat: -26.6342, lng: -48.6932 }, // Região Barriga Velha
+            { lat: -26.9072, lng: -48.7135 } // Região Itajaí e Balneário Camboriú
+        ];
+
+        function initMap() {
+            for (let i = 0; i < locations.length; i++) {
+                maps[i] = new google.maps.Map(document.getElementById(`map${i + 1}`), {
+                    center: locations[i],
+                    zoom: 11,
+                    disableDefaultUI: true
+                });
+
+                let trafficLayer = new google.maps.TrafficLayer();
+                trafficLayer.setMap(maps[i]);
+            }
+
+
+        }
+
+        setInterval(() => {
+            for (let i = 0; i < maps.length; i++) {
+                let trafficLayer = new google.maps.TrafficLayer();
+                trafficLayer.setMap(maps[i]);
+            }
+        }, 600000); // Atualiza a cada 10 minutos (600000ms)
+
+    </script>
+</body>
+
+</html>
